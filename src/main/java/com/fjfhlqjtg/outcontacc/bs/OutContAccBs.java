@@ -1,5 +1,6 @@
 package com.fjfhlqjtg.outcontacc.bs;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import com.fjfhlqjtg.outcontacc.vo.TaskInfoVo;
 import com.fjfhlqjtg.utils.MsgUtil;
 import com.fjfhlqjtg.utils.StringUtil;
 import com.fjfhlqjtg.utils.XMLUtil;
+import com.thoughtworks.xstream.converters.ConversionException;
 
 public class OutContAccBs {
 	private final Logger log = LogManager.getLogger(this.getClass());
@@ -60,10 +62,16 @@ public class OutContAccBs {
 				// TODO 4、分别保存日志信息、基本信息、离线任务信息和缴费计划信息
 				save(vo);
 				msg=MsgUtil.buildReturnMsg("OUTCONTACC", "4", "0", "服务调用成功.");
-			} catch (ValidationException e) {
+			} catch(ConversionException e){//XStream转换异常
 				log.error(e.getMessage());
-				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4002", "入参校验失败.");
-			} catch (Exception e) {
+				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4002", "入参转换失败.");
+			} catch (ValidationException e) {//Validation校验异常
+				log.error(e.getMessage());
+				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4003", "入参校验失败.");
+			} catch(SQLException e){//SQL保存异常
+				log.error(e.getMessage());
+				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4004", "保存数据库失败.");
+			} catch (Exception e) {//其它异常
 				e.printStackTrace();
 			}
 		} else {
