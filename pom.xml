@@ -167,7 +167,13 @@
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-
+		
+		<!-- log4jdbc -->
+		<dependency>
+			<groupId>org.lazyluke</groupId>
+			<artifactId>log4jdbc-remix</artifactId>
+			<version>0.2.7</version>
+		</dependency>
 
 		<!-- GENERAL UTILS begin -->
 		<dependency>
@@ -187,7 +193,6 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<finalName>ht_ri</finalName>
