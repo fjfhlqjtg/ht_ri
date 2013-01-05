@@ -1,6 +1,22 @@
 package com.fjfhlqjtg.utils;
 
+import java.io.IOException;
+import java.io.StringWriter;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.lang3.StringUtils;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.fjfhlqjtg.outcontacc.vo.OutContAccVo;
 import com.fjfhlqjtg.outcontacc.vo.PlyInfoVo;
@@ -33,11 +49,11 @@ public class XMLUtil {
 	public static Object parseXml2JavaBean(String serviceType, String xmlStr)
 			throws Exception {
 		Object obj = null;
-		if (StringUtils.equalsIgnoreCase("OUTCONTACC", xmlStr)) {
+		if (StringUtils.equalsIgnoreCase("OUTCONTACC", serviceType)) {
 			obj = parseXml2OutContAcc(xmlStr);
-		} else if (StringUtils.equalsIgnoreCase("OUTFACACC", xmlStr)) {
+		} else if (StringUtils.equalsIgnoreCase("OUTFACACC", serviceType)) {
 
-		} else if (StringUtils.equalsIgnoreCase("INFACACC", xmlStr)) {
+		} else if (StringUtils.equalsIgnoreCase("INFACACC", serviceType)) {
 
 		}
 		return obj;
@@ -62,7 +78,7 @@ public class XMLUtil {
 			xstream.aliasField("TRANSACTION_TYPE", OutContAccVo.class,
 					"operateType");
 
-			xstream.aliasField("PLY_INFO", OutContAccVo.class, "plyInfoVo");
+			xstream.aliasField("PLY_INFO", OutContAccVo.class, "plyVo");
 			xstream.alias("PLY_INFO", PlyInfoVo.class);
 			xstream.aliasField("CREATEDATETIME", PlyInfoVo.class, "crtTime");
 			xstream.aliasField("CREATEUSERCODE", PlyInfoVo.class, "crtCode");
@@ -111,7 +127,7 @@ public class XMLUtil {
 			xstream.aliasField("EXCLUDE", PlyInfoVo.class, "exclude");
 			xstream.aliasField("RISKLEVEL", PlyInfoVo.class, "riskLev");
 
-			xstream.aliasField("TASK_INFO", OutContAccVo.class, "taskInfoVo");
+			xstream.aliasField("TASK_INFO", OutContAccVo.class, "taskVo");
 			xstream.alias("TASK_INFO", TaskInfoVo.class);
 			xstream.aliasField("CREATEDATETIME", TaskInfoVo.class, "crtTime");
 			xstream.aliasField("CREATEUSERCODE", TaskInfoVo.class, "crtCode");
@@ -143,6 +159,35 @@ public class XMLUtil {
 			vo = (OutContAccVo) xstream.fromXML(xmlStr);
 		}
 		return vo;
+	}
+
+	public static String xml2String(String fileName) {
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+				.newInstance();
+		InputSource inputSource = new InputSource(fileName);
+		Document document = null;
+		StringWriter sw = null;
+		try {
+			document = documentBuilderFactory.newDocumentBuilder().parse(
+					inputSource);
+			sw = new StringWriter();
+			Transformer serializer = TransformerFactory.newInstance()
+					.newTransformer();
+			serializer.transform(new DOMSource(document), new StreamResult(sw));
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerFactoryConfigurationError e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+		return (sw == null) ? "" : sw.toString();
 	}
 
 }
