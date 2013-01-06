@@ -3,6 +3,8 @@ package com.fjfhlqjtg.validator.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -12,7 +14,7 @@ import com.fjfhlqjtg.validator.annotation.DeptCodeCheck;
 
 public class DeptCodeValidator implements
 		ConstraintValidator<DeptCodeCheck, String> {
-
+	private Logger log=LogManager.getLogger(this.getClass());
 	@Autowired
 	private OutContAccDao dao;
 
@@ -29,7 +31,7 @@ public class DeptCodeValidator implements
 		try {
 			deptCode = dao.queryForDeptCode(value);
 		} catch (EmptyResultDataAccessException e) {
-			System.out.println("未查询到数据");
+			log.info("通过部门编号:"+value+",在数据库中未查询到相关数据");
 		}
 		if (StringUtil.isNotNull(deptCode))
 			return true;
