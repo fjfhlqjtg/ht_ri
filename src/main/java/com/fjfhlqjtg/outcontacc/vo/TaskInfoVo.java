@@ -2,6 +2,8 @@ package com.fjfhlqjtg.outcontacc.vo;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
 public class TaskInfoVo {
 
 	private Date crtTime=null;
@@ -15,6 +17,7 @@ public class TaskInfoVo {
 	private String isIssued=null;
 	private String insuAmt=null;
 	private String prmAmt=null;
+	@NotNull
 	private Date startTime=null;
 	private String dptCode=null;
 	

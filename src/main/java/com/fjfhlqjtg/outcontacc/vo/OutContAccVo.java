@@ -2,6 +2,7 @@ package com.fjfhlqjtg.outcontacc.vo;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -13,8 +14,10 @@ public class OutContAccVo {
 	private String serviceType=null;
 	private String operateType=null;
 	@NotNull
+	@Valid
 	private PlyInfoVo plyVo=null;
 	@NotNull
+	@Valid
 	private TaskInfoVo taskVo=null;
 	private List<PlyPayPlanVo> planList=null;
 	

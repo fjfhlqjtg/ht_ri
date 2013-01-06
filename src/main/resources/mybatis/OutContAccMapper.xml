@@ -29,6 +29,21 @@
 	</insert>
 
 	<select id="queryForDeptCode" parameterType="String" resultType="String">
-		SELECT C_DPT_CDE FROM T_DEPARTMENT   WHERE C_DPT_CDE=#{deptCde}
+		SELECT C_DPT_CDE FROM T_DEPARTMENT WHERE C_DPT_CDE=#{deptCde}
+	</select>
+
+	<select id="queryForContIsReady" parameterType="int" resultType="String">
+		select C_READY_MRK from t_cont_ready where C_YEAR=#{year}
+	</select>
+
+	<select id="queryForContIsExist" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM T_CONT_NO_SET
+		WHERE C_CONT_YEAR = #{year}
+		ORDER BY N_PRIORITY
+	</select>
+	
+	<select id="queryForExcludeCode" parameterType="String" resultType="String">
+		SELECT C_OBJ_TYPE_CDE FROM T_OBJ_TYPE WHERE C_OBJ_TYPE_CDE=#{exclude}
 	</select>
 </mapper> 

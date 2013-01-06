@@ -4,6 +4,11 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.fjfhlqjtg.validator.annotation.ContExistCheck;
+import com.fjfhlqjtg.validator.annotation.ContReadyCheck;
+import com.fjfhlqjtg.validator.annotation.DeptCodeCheck;
+import com.fjfhlqjtg.validator.annotation.ExcludeCheck;
+
 public class PlyInfoVo {
 
 	private Date crtTime=null;
@@ -17,13 +22,17 @@ public class PlyInfoVo {
 	private String docNo=null;
 	private String docType=null;
 	private String serialNo=null;
-	@NotNull
+	@NotNull(message="险种编号不能为空")
 	private String insuCode=null;
-	@NotNull
+	@NotNull(message="部门编号不能为空")
+	@DeptCodeCheck(message="部门编号错误")
 	private String deptNo=null;
 	private String insuName=null;
 	private String agentCode=null;
 	private String agentComPrt=null;
+	@NotNull(message="起保时间不能为空.")
+	@ContReadyCheck(message="合同未就绪")
+	@ContExistCheck(message="没有可进入的合同")
 	private Date insuBegTime=null;
 	private Date insuEndTime=null;
 	private Date payBegTime=null;
@@ -47,6 +56,7 @@ public class PlyInfoVo {
 	private String remark=null;
 	private String saleSys=null;
 	private String persistMark=null;
+	@ExcludeCheck(message="除外标的不正确")
 	private String exclude=null;
 	private String riskLev=null;
 	

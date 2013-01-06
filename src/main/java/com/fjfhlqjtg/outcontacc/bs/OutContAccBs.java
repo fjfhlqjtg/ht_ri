@@ -8,8 +8,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjfhlqjtg.outcontacc.dao.OutContAccDao;
@@ -22,7 +22,7 @@ import com.fjfhlqjtg.utils.StringUtil;
 import com.fjfhlqjtg.utils.XMLUtil;
 
 public class OutContAccBs {
-	private static Logger log = LoggerFactory.getLogger(OutContAccBs.class);
+	private Logger log = LogManager.getLogger(this.getClass());
 	@Autowired
 	private OutContAccDao dao;
 	/**
