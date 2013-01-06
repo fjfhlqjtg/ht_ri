@@ -33,22 +33,23 @@ public class ContReadyValidator implements
 	@Override
 	public boolean isValid(Date value, ConstraintValidatorContext context) {
 		if (value == null)
-			try {
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(value);
-				int year = calendar.get(Calendar.YEAR);
-				String readyMrk = dao.queryForContIsReady(year);
-				if (StringUtil.isNotNull(readyMrk)) {
-					if ("1".equals(readyMrk))
-						return true;
-					else
-						return false;
-				} else
+			return false;
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(value);
+			int year = calendar.get(Calendar.YEAR);
+			String readyMrk = dao.queryForContIsReady(year);
+			if (StringUtil.isNotNull(readyMrk)) {
+				if ("1".equals(readyMrk))
+					return true;
+				else
 					return false;
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				log.error("转换格式错误");
-			}
+			} else
+				return false;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			log.error("转换格式错误");
+		}
 		return false;
 	}
 
