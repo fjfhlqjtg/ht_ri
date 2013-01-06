@@ -12,9 +12,14 @@ import com.fjfhlqjtg.outcontacc.dao.OutContAccDao;
 import com.fjfhlqjtg.utils.StringUtil;
 import com.fjfhlqjtg.validator.annotation.DeptCodeCheck;
 
+/**
+ * 部门编号是否合法校验
+ * @author fjfhlqjtg
+ *
+ */
 public class DeptCodeValidator implements
 		ConstraintValidator<DeptCodeCheck, String> {
-	private Logger log=LogManager.getLogger(this.getClass());
+	private Logger log = LogManager.getLogger(this.getClass());
 	@Autowired
 	private OutContAccDao dao;
 
@@ -31,7 +36,7 @@ public class DeptCodeValidator implements
 		try {
 			deptCode = dao.queryForDeptCode(value);
 		} catch (EmptyResultDataAccessException e) {
-			log.info("通过部门编号:"+value+",在数据库中未查询到相关数据");
+			log.info("通过部门编号:" + value + ",在数据库中未查询到相关数据");
 		}
 		if (StringUtil.isNotNull(deptCode))
 			return true;

@@ -38,7 +38,7 @@ public class ContReadyValidator implements
 			return false;
 		try {
 			Date insuDate = DateUtils.parseDate(value, "YYYYMMDD");
-			Calendar calendar=Calendar.getInstance();
+			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(insuDate);
 			int year = calendar.get(Calendar.YEAR);
 			String readyMrk = dao.queryForContIsReady(year);
