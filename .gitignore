@@ -20,4 +20,6 @@ bin
 /lib
 .cache
 .dos_cmds
+logs
+*.log
 
