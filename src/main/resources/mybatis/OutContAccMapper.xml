@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace必须指向Dao接口 -->
-<mapper namespace="">
+<mapper namespace="com.fjfhlqjtg.outcontacc.dao.OutContAccDao">
 
 	<insert id="saveTaskInfo" parameterType="map">
 		insert into
@@ -28,4 +28,7 @@
 		(#{plyAppNo},#{plyNo},#{edrAppNo},#{edrNo},#{paySeq},#{payBegTime},#{payEndTime},#{prmAmt},#{curr},#{state})
 	</insert>
 
+	<select id="queryForDeptCode" parameterType="String" resultType="String">
+		SELECT C_DPT_CDE FROM T_DEPARTMENT   WHERE C_DPT_CDE=#{deptCde}
+	</select>
 </mapper> 
