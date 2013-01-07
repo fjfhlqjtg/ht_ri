@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -22,9 +20,11 @@ import com.fjfhlqjtg.utils.StringUtil;
 import com.fjfhlqjtg.utils.XMLUtil;
 
 public class OutContAccBs {
-	private Logger log = LogManager.getLogger(this.getClass());
+	private final Logger log = LogManager.getLogger(this.getClass());
 	@Autowired
 	private OutContAccDao dao;
+	@Autowired
+	private Validator validator;
 	/**
 	 * 分出合同计算服务
 	 * 
@@ -43,9 +43,6 @@ public class OutContAccBs {
 				if (obj != null)
 					vo = (OutContAccVo) obj;
 				// TODO 3、校验JavaBean和字段是否符合业务条件
-				ValidatorFactory factory = Validation
-						.buildDefaultValidatorFactory();
-				Validator validator = factory.getValidator();
 				Set<ConstraintViolation<OutContAccVo>> constraintValidator = validator
 						.validate(vo);
 				log.error(constraintValidator.iterator().next().getMessage());
@@ -65,7 +62,7 @@ public class OutContAccBs {
 	 * 
 	 * @param vo
 	 */
-	private void save(OutContAccVo vo) {
+	private void save(OutContAccVo vo) throws Exception{
 		if (vo != null) {
 			PlyInfoVo baseVo = vo.getPlyVo();
 			TaskInfoVo taskVo = vo.getTaskVo();
@@ -82,7 +79,7 @@ public class OutContAccBs {
 	 * @param planList
 	 *            付款计划
 	 */
-	private void savePayPlan(List<PlyPayPlanVo> planList) {
+	private void savePayPlan(List<PlyPayPlanVo> planList) throws Exception{
 		for(PlyPayPlanVo vo:planList){
 			dao.savePayPlan(vo);
 		}
@@ -94,7 +91,7 @@ public class OutContAccBs {
 	 * @param taskVo
 	 *            离线任务
 	 */
-	private void saveTaskInfo(TaskInfoVo taskVo) {
+	private void saveTaskInfo(TaskInfoVo taskVo) throws Exception{
 		dao.saveTaskInfo(taskVo);
 	}
 
@@ -104,7 +101,7 @@ public class OutContAccBs {
 	 * @param baseVo
 	 *            基本信息
 	 */
-	private void saveBaseInfo(PlyInfoVo baseVo) {
+	private void saveBaseInfo(PlyInfoVo baseVo) throws Exception{
 		dao.saveBaseInfo(baseVo);
 	}
 }
