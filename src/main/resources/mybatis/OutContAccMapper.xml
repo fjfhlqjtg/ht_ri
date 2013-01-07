@@ -12,7 +12,7 @@
 		(#{TaskVo.crtTime},#{TaskVo.crtCode},#{TaskVo.updTime},#{TaskVo.updCode},#{sid},#{TaskVo.plyAppNo},#{TaskVo.plyNo},#{TaskVo.edrAppNo},#{TaskVo.edrNo},'1','0','0',#{TaskVo.insuAmt},#{TaskVo.prmAmt},'0','0',#{TaskVo.startTime},'0',#{TaskVo.dptCode},'0','1')
 	</insert>
 
-	<insert id="saveBaseInfo" parameterType="BaseVo">
+	<insert id="saveBaseInfo" parameterType="com.fjfhlqjtg.outcontacc.vo.PlyInfoVo">
 		insert into
 		t_plyedr_trail_cal_info
 		(createusercode,createdatetime,changeusercode,changedatetime,proposalno,policyno,edrappno,endorseno,documentno,documentntype,proposalserialno,productnodecode,deptcode,insuredname,agentcode,agentcommprt,startdate,enddate,paystart,payend,paymentmode,insurancevaluecurrency,insurancevalue,insurancevaluevar,premiumcurrency,premium,premiumvar,developbusinessamt,developbusinessvar,commissionamt,commissionvar,brokeramt,brokervar,issuedate,paybeforeissuedate,maxdate,remark,salesys,persistmark,exclude,risklevel)
@@ -20,7 +20,7 @@
 		(#{crtCode},#{crtTime},#{updCode},#{updTime},#{plyAppNo},#{plyNo},#{edrAppNo},#{edrNo},#{docNo},#{docType},#{serialNo},#{insuCode},#{deptNo},#{insuName},#{agentCode},#{agentComPrt},#{insuBegTime},#{insuEndTime},#{payBegTime},#{payEndTime},#{payMode},#{insuCurr},#{insuAmt},#{insuAmtVar},#{prmCurr},#{prmAmt},#{prmAmtVar},#{showAmt},#{showAmtVar},#{commisonAmt},#{commisonAmtVar},#{brokerAmt},#{brokerAmtVar},#{insuTime},#{payBeforeInsuTime},#{maxTime},#{remark},#{saleSys},#{persistMark},#{exclude},#{riskLev})
 	</insert>
 
-	<insert id="savePayPlan" parameterType="PlanVo">
+	<insert id="savePayPlan" parameterType="com.fjfhlqjtg.outcontacc.vo.PlyPayPlanVo">
 		insert into
 		t_pay_planinfo_stage
 		(proposalno,policyno,applyno,endorseno,paysequence,paystartdate,payenddate,premium,currency,state)
