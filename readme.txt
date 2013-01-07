@@ -1,0 +1,3 @@
+重构已存在的项目
+项目采用新的构架，由Spring加Axis2改为CXF加Spring、myBatis和Maven
+版本管理由SVN改为GIT
