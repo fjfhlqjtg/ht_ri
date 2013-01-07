@@ -203,6 +203,12 @@
 			<artifactId>xstream</artifactId>
 			<version>1.4.3</version>
 		</dependency>
+		<!-- ojdbc -->
+		<dependency>
+			<groupId>ojdbc</groupId>
+			<artifactId>ojdbc</artifactId>
+			<version>14</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>ht_ri</finalName>
