@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.fjfhlqjtg.outcontacc.dao.OutContAccDao">
+
+	<insert id="saveTaskInfo" parameterType="map">
+		insert into
+		t_cal_undr_task
+		(t_crt_tm,c_crt_cde,t_upd_tm,c_upd_cde,n_undrtask_sid,c_ply_app_no,c_ply_no,c_edr_app_no,c_edr_no,c_undr_mrk,c_year_mrk,n_long_termno,n_ri_amt,n_ri_prm,c_cal_typ,c_cal_mrk,t_task_start_tm,c_ready_mrk,c_dpt_cde,c_trail_cal,c_pa_mrk)
+		values
+		(#{TaskVo.crtTime},#{TaskVo.crtCode},#{TaskVo.updTime},#{TaskVo.updCode},#{sid},#{TaskVo.plyAppNo},#{TaskVo.plyNo},#{TaskVo.edrAppNo},#{TaskVo.edrNo},'1','0','0',#{TaskVo.insuAmt},#{TaskVo.prmAmt},'0','0',#{TaskVo.startTime},'0',#{TaskVo.dptCode},'0','1')
+	</insert>
+
+	<insert id="saveBaseInfo" parameterType="com.fjfhlqjtg.outcontacc.vo.PlyInfoVo">
+		insert into
+		t_plyedr_trail_cal_info
+		(createusercode,createdatetime,changeusercode,changedatetime,proposalno,policyno,edrappno,endorseno,documentno,documentntype,proposalserialno,productnodecode,deptcode,insuredname,agentcode,agentcommprt,startdate,enddate,paystart,payend,paymentmode,insurancevaluecurrency,insurancevalue,insurancevaluevar,premiumcurrency,premium,premiumvar,developbusinessamt,developbusinessvar,commissionamt,commissionvar,brokeramt,brokervar,issuedate,paybeforeissuedate,maxdate,remark,salesys,persistmark,exclude,risklevel)
+		values
+		(#{crtCode},#{crtTime},#{updCode},#{updTime},#{plyAppNo},#{plyNo},#{edrAppNo},#{edrNo},#{docNo},#{docType},#{serialNo},#{insuCode},#{deptNo},#{insuName},#{agentCode},#{agentComPrt},#{insuBegTime},#{insuEndTime},#{payBegTime},#{payEndTime},#{payMode},#{insuCurr},#{insuAmt},#{insuAmtVar},#{prmCurr},#{prmAmt},#{prmAmtVar},#{showAmt},#{showAmtVar},#{commisonAmt},#{commisonAmtVar},#{brokerAmt},#{brokerAmtVar},#{insuTime},#{payBeforeInsuTime},#{maxTime},#{remark},#{saleSys},#{persistMark},#{exclude},#{riskLev})
+	</insert>
+
+	<insert id="savePayPlan" parameterType="com.fjfhlqjtg.outcontacc.vo.PlyPayPlanVo">
+		insert into
+		t_pay_planinfo_stage
+		(proposalno,policyno,applyno,endorseno,paysequence,paystartdate,payenddate,premium,currency,state)
+		values
+		(#{plyAppNo},#{plyNo},#{edrAppNo},#{edrNo},#{paySeq},#{payBegTime},#{payEndTime},#{prmAmt},#{curr},#{state})
+	</insert>
+
+	<select id="queryForDeptCode" parameterType="String" resultType="String">
+		SELECT C_DPT_CDE FROM T_DEPARTMENT WHERE C_DPT_CDE=#{deptCde}
+	</select>
+
+	<select id="queryForContIsReady" parameterType="int" resultType="String">
+		select C_READY_MRK from t_cont_ready where C_YEAR=#{year}
+	</select>
+
+	<select id="queryForContIsExist" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM T_CONT_NO_SET
+		WHERE C_CONT_YEAR = #{year}
+		ORDER BY N_PRIORITY
+	</select>
+	
+	<select id="queryForExcludeCode" parameterType="String" resultType="String">
+		SELECT C_OBJ_TYPE_CDE FROM T_OBJ_TYPE WHERE C_OBJ_TYPE_CDE=#{exclude}
+	</select>
+</mapper> 
