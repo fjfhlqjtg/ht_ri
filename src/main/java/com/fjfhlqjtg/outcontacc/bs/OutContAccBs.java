@@ -1,11 +1,12 @@
 package com.fjfhlqjtg.outcontacc.bs;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
 import javax.validation.Validator;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class OutContAccBs {
 	private OutContAccDao dao;
 	@Autowired
 	private Validator validator;
+
 	/**
 	 * 分出合同计算服务
 	 * 
@@ -42,17 +44,30 @@ public class OutContAccBs {
 				Object obj = XMLUtil.parseXml2JavaBean("OUTCONTACC", xmlStr);
 				if (obj != null)
 					vo = (OutContAccVo) obj;
-				// TODO 3、校验JavaBean和字段是否符合业务条件
+				// 3、校验JavaBean和字段是否符合业务条件
 				Set<ConstraintViolation<OutContAccVo>> constraintValidator = validator
 						.validate(vo);
 				log.error(constraintValidator.iterator().next().getMessage());
+				if (constraintValidator.size() != 0){
+					StringBuffer sb = new StringBuffer();
+					Iterator<ConstraintViolation<OutContAccVo>> it = constraintValidator
+							.iterator();
+					for (; it.hasNext();) {
+						sb.append(it.next().getMessage()).append(";");
+					}
+					throw new ValidationException(sb.toString());
+				}
 				// TODO 4、分别保存日志信息、基本信息、离线任务信息和缴费计划信息
 				save(vo);
+				msg=MsgUtil.buildReturnMsg("OUTCONTACC", "4", "0", "服务调用成功.");
+			} catch (ValidationException e) {
+				log.error(e.getMessage());
+				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4002", "入参校验失败.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4001", "入参xml为空");
+			msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4001", "入参xml为空.");
 		}
 		return msg;
 	}
@@ -62,7 +77,7 @@ public class OutContAccBs {
 	 * 
 	 * @param vo
 	 */
-	private void save(OutContAccVo vo) throws Exception{
+	private void save(OutContAccVo vo) throws Exception {
 		if (vo != null) {
 			PlyInfoVo baseVo = vo.getPlyVo();
 			TaskInfoVo taskVo = vo.getTaskVo();
@@ -79,8 +94,8 @@ public class OutContAccBs {
 	 * @param planList
 	 *            付款计划
 	 */
-	private void savePayPlan(List<PlyPayPlanVo> planList) throws Exception{
-		for(PlyPayPlanVo vo:planList){
+	private void savePayPlan(List<PlyPayPlanVo> planList) throws Exception {
+		for (PlyPayPlanVo vo : planList) {
 			dao.savePayPlan(vo);
 		}
 	}
@@ -91,7 +106,7 @@ public class OutContAccBs {
 	 * @param taskVo
 	 *            离线任务
 	 */
-	private void saveTaskInfo(TaskInfoVo taskVo) throws Exception{
+	private void saveTaskInfo(TaskInfoVo taskVo) throws Exception {
 		dao.saveTaskInfo(taskVo);
 	}
 
@@ -101,7 +116,7 @@ public class OutContAccBs {
 	 * @param baseVo
 	 *            基本信息
 	 */
-	private void saveBaseInfo(PlyInfoVo baseVo) throws Exception{
+	private void saveBaseInfo(PlyInfoVo baseVo) throws Exception {
 		dao.saveBaseInfo(baseVo);
 	}
 }
