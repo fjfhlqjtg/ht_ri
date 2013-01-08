@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjfhlqjtg.outcontacc.dao.OutContAccDao;
-import com.fjfhlqjtg.validator.annotation.ContReadyCheck;
+import com.fjfhlqjtg.validator.annotation.ContExistCheck;
 
 /**
  * 是否有可进入合同校验
@@ -17,13 +17,13 @@ import com.fjfhlqjtg.validator.annotation.ContReadyCheck;
  *
  */
 public class ContExistValidator implements
-		ConstraintValidator<ContReadyCheck, Date> {
+		ConstraintValidator<ContExistCheck, Date> {
 
 	@Autowired
 	private OutContAccDao dao;
 
 	@Override
-	public void initialize(ContReadyCheck constraintAnnotation) {
+	public void initialize(ContExistCheck constraintAnnotation) {
 
 	}
 
