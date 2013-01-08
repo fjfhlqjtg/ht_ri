@@ -1,8 +1,10 @@
 package com.fjfhlqjtg.outcontacc;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
 import javax.validation.Validator;
 
 import junit.framework.Assert;
@@ -14,11 +16,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fjfhlqjtg.outcontacc.vo.OutContAccVo;
 import com.fjfhlqjtg.utils.XMLUtil;
 
-@ContextConfiguration(locations="classpath:spring/applicationContext.xml")
+@ContextConfiguration(locations = "classpath:spring/applicationContext.xml")
+@Transactional(value = "txManager")
 public class OutContAccTest extends
 		AbstractTransactionalJUnit4SpringContextTests {
 
@@ -55,7 +59,18 @@ public class OutContAccTest extends
 					"OUTCONTACC", xmlStr);
 			Set<ConstraintViolation<OutContAccVo>> constraint = validator
 					.validate(obj);
-			Assert.assertEquals(0, constraint.size());
+
+			if (constraint.size() != 0) {
+				StringBuffer sb = new StringBuffer();
+				Iterator<ConstraintViolation<OutContAccVo>> it = constraint
+						.iterator();
+				for (; it.hasNext();) {
+					sb.append(it.next().getMessage()).append(";");
+				}
+				throw new ValidationException(sb.toString());
+			}
+		} catch (ValidationException e) {
+			log.error(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
