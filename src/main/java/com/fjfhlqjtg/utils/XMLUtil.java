@@ -66,7 +66,7 @@ public class XMLUtil {
 	 *            入参xml字符串
 	 * @return <p>分出合同JavaBean</p><see>com.fjfhlqjtg.outcontacc.vo.OutContAccVo</see>
 	 */
-	private static Object parseXml2OutContAcc(String xmlStr) {
+	private static Object parseXml2OutContAcc(String xmlStr) throws Exception{
 		OutContAccVo vo = null;
 		if (StringUtil.isNotNull(xmlStr)) {
 			XStream xstream = new XStream(new DomDriver());
