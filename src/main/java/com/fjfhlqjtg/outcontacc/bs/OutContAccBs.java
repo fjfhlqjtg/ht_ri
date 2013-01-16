@@ -12,6 +12,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fjfhlqjtg.log.bs.LogBs;
 import com.fjfhlqjtg.outcontacc.dao.OutContAccDao;
 import com.fjfhlqjtg.outcontacc.vo.OutContAccVo;
 import com.fjfhlqjtg.outcontacc.vo.PlyInfoVo;
@@ -26,6 +27,8 @@ public class OutContAccBs {
 	private final Logger log = LogManager.getLogger(this.getClass());
 	@Autowired
 	private OutContAccDao dao;
+	@Autowired
+	private LogBs logBs;
 	@Autowired
 	private Validator validator;
 
@@ -60,7 +63,8 @@ public class OutContAccBs {
 					throw new ValidationException(sb.toString());
 				}
 				// TODO 4、分别保存日志信息、基本信息、离线任务信息和缴费计划信息
-				save(vo);
+				logBs.saveLog(vo,xmlStr);
+				saveInfo(vo);
 				msg=MsgUtil.buildReturnMsg("OUTCONTACC", "4", "0", "服务调用成功.");
 			} catch(ConversionException e){//XStream转换异常
 				log.error(e.getMessage());
@@ -80,12 +84,13 @@ public class OutContAccBs {
 		return msg;
 	}
 
+
 	/**
 	 * 保存xml信息到数据库
 	 * 
 	 * @param vo
 	 */
-	private void save(OutContAccVo vo) throws Exception {
+	private void saveInfo(OutContAccVo vo) throws Exception {
 		if (vo != null) {
 			PlyInfoVo baseVo = vo.getPlyVo();
 			TaskInfoVo taskVo = vo.getTaskVo();
