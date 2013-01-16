@@ -23,6 +23,7 @@ import com.fjfhlqjtg.outcontacc.vo.PlyInfoVo;
 import com.fjfhlqjtg.outcontacc.vo.PlyPayPlanVo;
 import com.fjfhlqjtg.outcontacc.vo.TaskInfoVo;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.ConversionException;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -47,7 +48,7 @@ public class XMLUtil {
 	 * @return
 	 */
 	public static Object parseXml2JavaBean(String serviceType, String xmlStr)
-			throws Exception {
+			throws ConversionException {
 		Object obj = null;
 		if (StringUtils.equalsIgnoreCase("OUTCONTACC", serviceType)) {
 			obj = parseXml2OutContAcc(xmlStr);
@@ -66,7 +67,7 @@ public class XMLUtil {
 	 *            入参xml字符串
 	 * @return <p>分出合同JavaBean</p><see>com.fjfhlqjtg.outcontacc.vo.OutContAccVo</see>
 	 */
-	private static Object parseXml2OutContAcc(String xmlStr) throws Exception{
+	private static Object parseXml2OutContAcc(String xmlStr) throws ConversionException{
 		OutContAccVo vo = null;
 		if (StringUtil.isNotNull(xmlStr)) {
 			XStream xstream = new XStream(new DomDriver());
