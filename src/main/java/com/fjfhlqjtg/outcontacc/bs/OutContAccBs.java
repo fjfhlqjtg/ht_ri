@@ -1,17 +1,21 @@
 package com.fjfhlqjtg.outcontacc.bs;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fjfhlqjtg.exception.TaskIdIsEmptyException;
 import com.fjfhlqjtg.log.bs.LogBs;
 import com.fjfhlqjtg.outcontacc.dao.OutContAccDao;
 import com.fjfhlqjtg.outcontacc.vo.OutContAccVo;
@@ -72,9 +76,12 @@ public class OutContAccBs {
 			} catch (ValidationException e) {//Validation校验异常
 				log.error(e.getMessage());
 				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4003", "入参校验失败.");
+			} catch(TaskIdIsEmptyException e){
+				log.error(e.getMessage());
+				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4004", "保存离线任务信息失败,未得到ID.");
 			} catch(SQLException e){//SQL保存异常
 				log.error(e.getMessage());
-				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4004", "保存数据库失败.");
+				msg = MsgUtil.buildReturnMsg("OUTCONTACC", "4", "-4005", "保存数据库失败.");
 			} catch (Exception e) {//其它异常
 				e.printStackTrace();
 			}
@@ -120,7 +127,20 @@ public class OutContAccBs {
 	 *            离线任务
 	 */
 	private void saveTaskInfo(TaskInfoVo taskVo) throws Exception {
-		dao.saveTaskInfo(taskVo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("deptNo", taskVo.getDptCode());
+		try {
+			param = dao.queryForTaskId(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String id = (String) param.get("sid");
+		if (StringUtil.isNull(id))
+			throw new TaskIdIsEmptyException("离线任务ID为空");
+		map.put("TaskVo", taskVo);
+		map.put("sid", id);
+		dao.saveTaskInfo(map);
 	}
 
 	/**
