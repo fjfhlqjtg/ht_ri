@@ -18,6 +18,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.fjfhlqjtg.infacacc.vo.InFacAccVo;
 import com.fjfhlqjtg.outcontacc.vo.OutContAccVo;
 import com.fjfhlqjtg.outcontacc.vo.PlyInfoVo;
 import com.fjfhlqjtg.outcontacc.vo.PlyPayPlanVo;
@@ -55,9 +56,22 @@ public class XMLUtil {
 		} else if (StringUtils.equalsIgnoreCase("OUTFACACC", serviceType)) {
 
 		} else if (StringUtils.equalsIgnoreCase("INFACACC", serviceType)) {
-
+			obj=parseXml2InFacAcc(xmlStr);
 		}
 		return obj;
+	}
+
+	/**
+	 * 将入参转换为分入临分JavaBean
+	 * @param xmlStr	入参xml字符串
+	 * @return	<p>分出合同JavaBean</p><see>com.fjfhlqjtg.infacacc.vo.InFacAccVo</see>
+	 */
+	private static Object parseXml2InFacAcc(String xmlStr) {
+		InFacAccVo vo=null;
+		if(StringUtil.isNotNull(xmlStr)){
+			
+		}
+		return vo;
 	}
 
 	/**
