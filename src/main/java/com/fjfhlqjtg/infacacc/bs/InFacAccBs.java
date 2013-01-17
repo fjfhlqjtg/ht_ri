@@ -1,6 +1,7 @@
 package com.fjfhlqjtg.infacacc.bs;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -11,6 +12,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fjfhlqjtg.infacacc.dao.InFacAccDao;
+import com.fjfhlqjtg.infacacc.vo.BaseVo;
+import com.fjfhlqjtg.infacacc.vo.ExpenseVo;
 import com.fjfhlqjtg.infacacc.vo.InFacAccVo;
 import com.fjfhlqjtg.log.bs.LogBs;
 import com.fjfhlqjtg.utils.MsgUtil;
@@ -30,6 +34,8 @@ public class InFacAccBs {
 	private LogBs logBs;
 	@Autowired
 	private Validator validator;
+	@Autowired
+	private InFacAccDao dao;
 
 	public String infacacc(String xmlStr) {
 		String msg = null;
@@ -40,7 +46,9 @@ public class InFacAccBs {
 				InFacAccVo vo = null;
 				if (obj != null)
 					vo = (InFacAccVo) obj;
-				// 2、 校验入参
+				// 2、保存日志
+				logBs.saveLog(vo, xmlStr);
+				// 3、 校验入参
 				Set<ConstraintViolation<InFacAccVo>> constraintValidator = validator
 						.validate(vo);
 				log.error(constraintValidator.iterator().next().getMessage());
@@ -53,7 +61,8 @@ public class InFacAccBs {
 					}
 					throw new ValidationException(sb.toString());
 				}
-				// 3、TODO 保存入参
+				// TODO 3、保存入参
+				saveInfo(vo);
 			} catch (ConversionException e) {
 				log.error(e.getMessage());
 				msg = MsgUtil.buildReturnMsg("INFACACC", "1", "-1002",
@@ -62,10 +71,56 @@ public class InFacAccBs {
 				log.error(e.getMessage());
 				msg = MsgUtil.buildReturnMsg("INFACACC", "1", "-1003",
 						"入参校验失败.");
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				msg = MsgUtil.buildReturnMsg("INFACACC", "1", "-1900", "其它错误."
+						+ e.getMessage());
 			}
 		} else {
 			msg = MsgUtil.buildReturnMsg("INFACACC", "1", "-1001", "入参xml为空.");
 		}
 		return msg;
+	}
+
+	/**
+	 * 保存入参信息
+	 * 
+	 * @param vo
+	 */
+	private void saveInfo(InFacAccVo vo) throws Exception {
+		// 3.1、保存基本信息
+		BaseVo baseVo = vo.getBaseVo();
+		saveBaseInfo(baseVo);
+		// TODO 3.2、保存费用信息
+		List<ExpenseVo> expenList = vo.getExpenseList();
+		saveExpenList(expenList);
+		// TODO 3.3、保存账单信息
+		
+	}
+
+	/**
+	 * 保存分入临分费用信息
+	 * 
+	 * @param expenList
+	 */
+	private void saveExpenList(List<ExpenseVo> expenList) throws Exception {
+		if (expenList != null) {
+			for (ExpenseVo vo : expenList) {
+				if (vo == null)
+					continue;
+				dao.saveExpenInfo(vo);
+			}
+		}
+	}
+
+	/**
+	 * 保存分入临分基本信息
+	 * 
+	 * @param baseVo
+	 */
+	private void saveBaseInfo(BaseVo baseVo) throws Exception {
+		if (baseVo != null) {
+			dao.saveBaseInfo(baseVo);
+		}
 	}
 }

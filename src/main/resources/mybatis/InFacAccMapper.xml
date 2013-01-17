@@ -2,9 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace必须指向Dao接口 -->
-<mapper namespace="com.fjfhlqjtg.log.dao.LogDao">
+<mapper namespace="com.fjfhlqjtg.infacacc.dao.InFacAccDao">
 
 	<select id="queryForSaleSys" parameterType="String" resultType="String">
-		select c_srch_val from t_qrypara where c_srch_cde = 'XSTX' AND c_srch_val=#{saleSys}
+		select c_srch_val from t_qrypara where c_srch_cde = 'XSTX' AND
+		c_srch_val=#{saleSys}
 	</select>
+
+	<insert id="saveBaseInfo" parameterType="com.fjfhlqjtg.infacacc.vo.BaseVo">
+		insert into
+		t_plyfac(c_crt_cde,t_crt_tm,c_upd_cde,t_upd_tm,c_ply_no,c_fac_id,c_fac_ply_no,n_orig_amt,n_orig_prm,n_offer_prop,n_accept_prop,c_reins_cde,c_capins_cde,c_loc_mrk,c_grnt_mrk,c_exchg_mrk,c_accnt_no,t_accnt_tm,n_sum_exp)
+		values
+		(#{crtCode},#{crtTime},#{updCode},#{updTime},#{plyNo},#{facNo},#{oriPlyNo},#{oriInsuAmt},#{oriPrmAmt},#{shareRate},#{acceptRate},#{cedIngComCode},#{cedEdComCode},"0","0","0","",#{accountTime},#{sumExpense})
+	</insert>
+
+	<insert id="saveExpenInfo" parameterType="com.fjfhlqjtg.infacacc.vo.ExpenseVo">
+		insert into
+		t_plyfacexp(c_crt_cde,t_crt_tm,c_upd_cde,t_upd_tm,c_ply_no,c_exp_typ,n_exp_prop,n_exp_amt)
+		values
+		(#{crtCode},#{crtTime},#{updCode},#{updTime},#{plyNo},#{expType},#{expRate},#{amount})
+	</insert>
 </mapper> 
