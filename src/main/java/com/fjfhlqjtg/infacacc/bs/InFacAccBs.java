@@ -1,5 +1,6 @@
 package com.fjfhlqjtg.infacacc.bs;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -71,6 +72,10 @@ public class InFacAccBs {
 				log.error(e.getMessage());
 				msg = MsgUtil.buildReturnMsg("INFACACC", "1", "-1003",
 						"入参校验失败.");
+			} catch(SQLException e){
+				log.error(e.getMessage());
+				msg = MsgUtil.buildReturnMsg("INFACACC", "1", "-1004",
+						"数据保存失败."+e.getMessage());
 			} catch (Exception e) {
 				log.error(e.getMessage());
 				msg = MsgUtil.buildReturnMsg("INFACACC", "1", "-1900", "其它错误."
