@@ -21,7 +21,6 @@ public class BaseVo {
 	private String edrNo=null;
 	private String facNo=null;
 	private String oriPlyNo=null;
-	private String bsnsType=null;
 	private String oriInsuAmt=null;
 	private String oriPrmAmt=null;
 	private String curr=null;
@@ -30,7 +29,8 @@ public class BaseVo {
 	private String prmAmt=null;
 	private double npi=0;
 	private String sumExpense=null;
-	private String cedComCode=null;
+	private String cedIngComCode=null;
+	private String cedEdComCode=null;
 	private String insuCode=null;
 	private String brokeCode=null;
 	private Date accountTime=null;
@@ -107,12 +107,6 @@ public class BaseVo {
 	public void setOriPlyNo(String oriPlyNo) {
 		this.oriPlyNo = oriPlyNo;
 	}
-	public String getBsnsType() {
-		return bsnsType;
-	}
-	public void setBsnsType(String bsnsType) {
-		this.bsnsType = bsnsType;
-	}
 	public String getOriInsuAmt() {
 		return oriInsuAmt;
 	}
@@ -161,11 +155,17 @@ public class BaseVo {
 	public void setSumExpense(String sumExpense) {
 		this.sumExpense = sumExpense;
 	}
-	public String getCedComCode() {
-		return cedComCode;
+	public String getCedIngComCode() {
+		return cedIngComCode;
 	}
-	public void setCedComCode(String cedComCode) {
-		this.cedComCode = cedComCode;
+	public void setCedIngComCode(String cedIngComCode) {
+		this.cedIngComCode = cedIngComCode;
+	}
+	public String getCedEdComCode() {
+		return cedEdComCode;
+	}
+	public void setCedEdComCode(String cedEdComCode) {
+		this.cedEdComCode = cedEdComCode;
 	}
 	public String getInsuCode() {
 		return insuCode;

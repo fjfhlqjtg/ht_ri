@@ -18,7 +18,10 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.fjfhlqjtg.infacacc.vo.BaseVo;
+import com.fjfhlqjtg.infacacc.vo.ExpenseVo;
 import com.fjfhlqjtg.infacacc.vo.InFacAccVo;
+import com.fjfhlqjtg.infacacc.vo.PlanVo;
 import com.fjfhlqjtg.outcontacc.vo.OutContAccVo;
 import com.fjfhlqjtg.outcontacc.vo.PlyInfoVo;
 import com.fjfhlqjtg.outcontacc.vo.PlyPayPlanVo;
@@ -66,10 +69,74 @@ public class XMLUtil {
 	 * @param xmlStr	入参xml字符串
 	 * @return	<p>分出合同JavaBean</p><see>com.fjfhlqjtg.infacacc.vo.InFacAccVo</see>
 	 */
-	private static Object parseXml2InFacAcc(String xmlStr) {
+	private static Object parseXml2InFacAcc(String xmlStr) throws ConversionException{
 		InFacAccVo vo=null;
 		if(StringUtil.isNotNull(xmlStr)){
+			XStream xstream = new XStream(new DomDriver());
+			xstream.registerConverter(new DateConverter("yyyy-MM-dd HH:mm:ss",
+					new String[] { "YYYY-MM-DD", "yyyy-MM-dd HH:mm:ss.S" }));
+			xstream.alias("INFACACC", InFacAccVo.class);
+			xstream.aliasField("SERVICE_TYPE", InFacAccVo.class,
+					"serviceType");
+			xstream.aliasField("TRANSACTION_TYPE", InFacAccVo.class,
+					"operateType");
+			xstream.aliasField("FAC_INPRPT_BASE_INFO", InFacAccVo.class, "BaseVo");
 			
+			xstream.alias("BaseVo", BaseVo.class);
+			xstream.aliasField("CREATEDATETIME", BaseVo.class, "crtTime");
+			xstream.aliasField("CREATEUSERCODE", BaseVo.class, "crtCode");
+			xstream.aliasField("CHANGEDATETIME", BaseVo.class, "updTime");
+			xstream.aliasField("CHANGEUSERCODE", BaseVo.class, "updCode");
+			xstream.aliasField("PROPOSALNO", BaseVo.class, "plyAppNo");
+			xstream.aliasField("POLICYNO", BaseVo.class, "plyNo");
+			xstream.aliasField("EDRAPPNO", BaseVo.class, "edrAppNo");
+			xstream.aliasField("ENDORSENO", BaseVo.class, "edrNo");
+			xstream.aliasField("FACID", BaseVo.class, "facNo");
+			xstream.aliasField("ORIGINALPOLICYNO", BaseVo.class, "oriPlyNo");
+			xstream.aliasField("ORIGINALINSURANCEVALUE", BaseVo.class, "oriInsuAmt");
+			xstream.aliasField("ORIGINALPREMIUM", BaseVo.class, "oriPrmAmt");
+			xstream.aliasField("CURRENCY", BaseVo.class, "curr");
+			xstream.aliasField("SHAREPERCENTAGE", BaseVo.class, "shareRate");
+			xstream.aliasField("ACCEPTPERCENTAGE", BaseVo.class, "acceptRate");
+			xstream.aliasField("INSUREDNAME", BaseVo.class, "insuNme");
+			xstream.aliasField("PREMIUM", BaseVo.class, "prmAmt");
+			xstream.aliasField("NPI", BaseVo.class, "npi");
+			xstream.aliasField("SUMEXPENSE", BaseVo.class, "sumExpense");
+			xstream.aliasField("CEDINGCOMPANYCODE", BaseVo.class, "cedIngComCode");
+			xstream.aliasField("CEDEDCOMPANYCODE", BaseVo.class, "cedEdComCode");
+			xstream.aliasField("PRODUCTNODECODE", BaseVo.class, "insuCode");
+			xstream.aliasField("BROKERCODE", BaseVo.class, "brokeCode");
+			xstream.aliasField("ACCOUNTTIME", BaseVo.class, "accountTime");
+			xstream.aliasField("SUMPAYTIME", BaseVo.class, "sumPay");
+			xstream.aliasField("<DEPTCODE>", BaseVo.class, "deptCode");
+			xstream.aliasField("SALESYS", BaseVo.class, "saleSys");
+			xstream.aliasField("STARTDATE", BaseVo.class, "startTime");
+			xstream.aliasField("ISSUEDATE", BaseVo.class, "issueTime");
+			
+			xstream.aliasField("FAC_INPRPT_EXPENSE_LIST", InFacAccVo.class, "expenseList");
+			xstream.alias("FAC_INPRPT_EXPENSE", ExpenseVo.class);
+			xstream.aliasField("CREATEUSERCODE", ExpenseVo.class, "crtTime");
+			xstream.aliasField("CREATEDATETIME", ExpenseVo.class, "crtCode");
+			xstream.aliasField("CHANGEUSERCODE", ExpenseVo.class, "updTime");
+			xstream.aliasField("CHANGEDATETIME", ExpenseVo.class, "updCode");
+			xstream.aliasField("POLICYNO", ExpenseVo.class, "plyNo");
+			xstream.aliasField("EXPTYPE", ExpenseVo.class, "expType");
+			xstream.aliasField("EXPPERCENTAGE", ExpenseVo.class, "expRate");
+			xstream.aliasField("AMOUNT", ExpenseVo.class, "amount");
+			
+			xstream.aliasField("FAC_INPRPT_PAY_PLAN_LIST", InFacAccVo.class, "planList");
+			xstream.alias("FAC_INPRPT_PAY_PLAN", PlanVo.class);
+			xstream.aliasField("POLICYNO", PlanVo.class, "plyNo");
+			xstream.aliasField("ENDORSENO", PlanVo.class, "edrNo");
+			xstream.aliasField("PAYSEQUENCE", PlanVo.class, "paySeq");
+			xstream.aliasField("PARTYCODE", PlanVo.class, "partyCde");
+			xstream.aliasField("PARTYNAME", PlanVo.class, "partyName");
+			xstream.aliasField("NPI", PlanVo.class, "npi");
+			xstream.aliasField("EXPENSE", PlanVo.class, "expenseAmt");
+			xstream.aliasField("PREMIUM", PlanVo.class, "premAmt");
+			xstream.aliasField("PAIDPREMIUM", PlanVo.class, "paidPrmAmt");
+			xstream.aliasField("PAYSTARTDATE", PlanVo.class, "payBegTime");
+			xstream.aliasField("PAYENDDATE", PlanVo.class, "payEndTime");
 		}
 		return vo;
 	}
