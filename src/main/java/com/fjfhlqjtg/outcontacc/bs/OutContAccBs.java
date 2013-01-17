@@ -66,7 +66,7 @@ public class OutContAccBs {
 					}
 					throw new ValidationException(sb.toString());
 				}
-				// TODO 4、分别保存日志信息、基本信息、离线任务信息和缴费计划信息
+				//  4、分别保存日志信息、基本信息、离线任务信息和缴费计划信息
 				logBs.saveLog(vo,xmlStr);
 				saveInfo(vo);
 				msg=MsgUtil.buildReturnMsg("OUTCONTACC", "4", "0", "服务调用成功.");
