@@ -43,6 +43,7 @@ public class BaseVo {
 	@NotEmpty(message="销售体系不能为空")
 	@SaleSysCheck(message="销售体系错误")
 	private String saleSys=null;
+	@NotNull(message="起保时间不能为空")
 	private Date startTime=null;
 	private Date issueTime=null;
 	private String insuNme=null;
